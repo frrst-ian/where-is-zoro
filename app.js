@@ -10,9 +10,8 @@ const jwt = require("jsonwebtoken");
 const passport = require("./config/passport");
 
 // Route imports
-const indexRouter = require("./routes/index");
+const authRouter = require("./routes/auth");
 const signUpRouter = require("./routes/signUp");
-
 
 // App initialization
 const app = express();
@@ -30,7 +29,7 @@ app.use(
 
       const allowedOrigins = [
         "http://localhost:3000",
-        "http://localhost:3001", 
+        "http://localhost:3001",
         "http://localhost:5173",
         "http://localhost:5174",
         // Add your production URLs here
@@ -56,32 +55,8 @@ app.use(
 );
 
 // Route handlers
-app.use("/", indexRouter);
+app.use("/auth", authRouter);
 app.use("/auth/signup", signUpRouter);
-
-
-// Authentication route
-app.post("/auth/login", (req, res) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err) {
-      return res.status(500).json({ error: "Authentication error" });
-    }
-    if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
-
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" },
-    );
-
-    res.json({
-      token,
-      user: { id: user.id, email: user.email, username: user.username },
-    });
-  })(req, res);
-});
 
 // 404 handler for undefined routes
 app.use("/{*any}", (req, res) => {

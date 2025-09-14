@@ -39,4 +39,20 @@ const signUpValidator = [
         }),
 ];
 
-module.exports = { signUpValidator };
+const loginValidator = [
+    body("identifier")
+        .trim()
+        .notEmpty()
+        .withMessage("Email or username is required")
+        .isLength({ max: 50 })
+        .withMessage("Identifier must be under 50 characters"),
+
+    body("password")
+        .notEmpty()
+        .withMessage("Password is required")
+        .isLength({ min: 1, max: 128 })
+        .withMessage("Password must be under 128 characters")
+];
+
+module.exports = { signUpValidator, loginValidator };
+
