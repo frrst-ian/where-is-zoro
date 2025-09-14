@@ -11,6 +11,8 @@ const passport = require("./config/passport");
 
 // Route imports
 const indexRouter = require("./routes/index");
+const signUpRouter = require("./routes/signUp");
+
 
 // App initialization
 const app = express();
@@ -55,6 +57,8 @@ app.use(
 
 // Route handlers
 app.use("/", indexRouter);
+app.use("/", signUpRouter);
+
 
 // Authentication route
 app.post("/auth/login", (req, res) => {
