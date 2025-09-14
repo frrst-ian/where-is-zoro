@@ -15,9 +15,61 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id          Int           @id @default(autoincrement())
+  username    String        @unique
+  email       String        @unique
+  password    String
+  createdAt   DateTime      @default(now())
+  GameSession GameSession[]
+}
+
+model Photo {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique
+  photoUrl           String
+  CharactersOnPhotos CharactersOnPhotos[]
+  GameSession        GameSession[]
+}
+
+model Character {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique
+  CharactersOnPhotos CharactersOnPhotos[]
+  Click              Click[]
+}
+
+model CharactersOnPhotos {
+  photo       Photo     @relation(fields: [photoId], references: [id])
+  photoId     Int
+  character   Character @relation(fields: [characterId], references: [id])
+  characterId Int
+  x           Float
+  y           Float
+  radius      Float
+
+  @@id([photoId, characterId])
+}
+
+model GameSession {
+  id        Int       @id @default(autoincrement())
+  photo     Photo     @relation(fields: [photoId], references: [id])
+  photoId   Int
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    Int?
+  startTime DateTime  @default(now())
+  endTime   DateTime?
+  completed Boolean   @default(false)
+  Click     Click[]
+}
+
+model Click {
+  id            Int         @id @default(autoincrement())
+  gameSession   GameSession @relation(fields: [gameSessionId], references: [id])
+  gameSessionId Int
+  x             Float
+  y             Float
+  character     Character?  @relation(fields: [characterId], references: [id])
+  characterId   Int?
+  correct       Boolean
+  clickedAt     DateTime    @default(now())
 }
