@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const signUpRouter = Router();
 const signUpController = require("../controllers/signUpController");
+const { userValidator } = require("../validators/userValidator.js");
 
-signUpRouter.get("/", signUpController.getSignUp);
-signUpRouter.post("/", signUpController.postSignUp);
+signUpRouter.post("/",userValidator, signUpController.postSignUp);
 
 module.exports = signUpRouter;

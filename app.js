@@ -57,7 +57,7 @@ app.use(
 
 // Route handlers
 app.use("/", indexRouter);
-app.use("/", signUpRouter);
+app.use("/sign-up", signUpRouter);
 
 
 // Authentication route
