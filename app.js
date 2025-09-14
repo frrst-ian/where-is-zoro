@@ -57,7 +57,7 @@ app.use(
 
 // Route handlers
 app.use("/", indexRouter);
-app.use("/sign-up", signUpRouter);
+app.use("/auth/signup", signUpRouter);
 
 
 // Authentication route
@@ -126,3 +126,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app;
