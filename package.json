@@ -41,5 +41,8 @@
   "jest": {
     "testEnvironment": "node",
     "forceExit": true
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }

@@ -13,6 +13,7 @@ const passport = require("./config/passport");
 const authRouter = require("./routes/auth");
 const signUpRouter = require("./routes/signUp");
 const sessionsRouter = require("./routes/sessions");
+const gameRouter = require("./routes/game");
 
 // App initialization
 const app = express();
@@ -59,6 +60,7 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/auth/signup", signUpRouter);
 app.use("/sessions", sessionsRouter);
+app.use("/game", gameRouter);
 
 // 404 handler for undefined routes
 app.use("/{*any}", (req, res) => {

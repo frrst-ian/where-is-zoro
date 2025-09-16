@@ -20,9 +20,11 @@ describe("Sessions API", () => {
 
   afterAll(async () => {
     // Clean up test data
+    await prisma.click.deleteMany({});
     await prisma.gameSession.deleteMany({});
+    await prisma.charactersOnPhotos.deleteMany({});
+    await prisma.character.deleteMany({});
     await prisma.photo.deleteMany({});
-    await prisma.$disconnect();
   });
 
   beforeEach(async () => {
