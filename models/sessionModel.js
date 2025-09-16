@@ -15,7 +15,7 @@ async function getSessionById(sessionId) {
         where: {
             id: sessionId,
             expiresAt: {
-                gt: new Date(), 
+                gt: new Date(),
             },
         },
     });
@@ -35,10 +35,15 @@ async function cleanupExpiredSessions() {
     await prisma.gameSession.deleteMany({
         where: {
             expiresAt: {
-                lt: new Date(), 
+                lt: new Date(),
             },
         },
     });
 }
 
-module.exports = { createSession,completeSession,getSessionById,cleanupExpiredSessions };
+module.exports = {
+    createSession,
+    completeSession,
+    getSessionById,
+    cleanupExpiredSessions,
+};

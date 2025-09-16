@@ -12,7 +12,8 @@ async function createSession(req, res, next) {
             startTime: session.startTime,
         });
     } catch (error) {
-        res.status(500).json({ error: "Failed to create session" });
+        console.error("Create session error:", error);
+        return res.status(500).json({ error: "Failed to create session" });
     }
 }
 
@@ -20,7 +21,7 @@ async function getSession(req, res) {
     try {
         const { sessionId } = req.params;
         const session = await sessionModel.getSessionById(sessionId);
-        
+
         if (!session) {
             return res.status(404).json({ error: "Session not found" });
         }
@@ -32,6 +33,7 @@ async function getSession(req, res) {
             // Add clicks/progress here later
         });
     } catch (error) {
+        console.error("Get session error:", error);
         res.status(500).json({ error: "Failed to get session" });
     }
 }
@@ -40,19 +42,23 @@ async function completeSession(req, res) {
     try {
         const { sessionId } = req.params;
         const session = await sessionModel.completeSession(sessionId);
-        
+
         if (!session) {
-            return res.status(404).json({ error: "Session not found or already completed" });
+            return res
+                .status(404)
+                .json({ error: "Session not found or already completed" });
         }
-        
+
         res.json({
             sessionId: session.id,
-            totalTime: session.endTime - session.startTime
+            totalTime: session.endTime - session.startTime,
         });
     } catch (error) {
+        console.error("Complete session error:", error);
         res.status(500).json({ error: "Failed to complete session" });
     }
 }
+
 module.exports = {
     createSession,
     getSession,
