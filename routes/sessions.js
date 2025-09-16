@@ -3,7 +3,7 @@ const sessionsRouter = Router();
 const sessionsController = require("../controllers/sessionsController");
 
 sessionsRouter.post("/", sessionsController.createSession);
-sessionsRouter.get("/", sessionsController.getSession);
-sessionsRouter.put("/", sessionsController.completeSession);
+sessionsRouter.get("/:sessionId", sessionsController.getSession);
+sessionsRouter.put("/:sessionId", sessionsController.completeSession);
 
 module.exports = sessionsRouter;
