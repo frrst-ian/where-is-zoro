@@ -51,7 +51,7 @@ model CharactersOnPhotos {
 }
 
 model GameSession {
-  id        Int       @id @default(autoincrement())
+  id        String    @id
   photo     Photo     @relation(fields: [photoId], references: [id])
   photoId   Int
   user      User?     @relation(fields: [userId], references: [id])
@@ -65,7 +65,7 @@ model GameSession {
 model Click {
   id            Int         @id @default(autoincrement())
   gameSession   GameSession @relation(fields: [gameSessionId], references: [id])
-  gameSessionId Int
+  gameSessionId String
   x             Float
   y             Float
   character     Character?  @relation(fields: [characterId], references: [id])

@@ -1,66 +1,66 @@
-const {body} = require('express-validator');
+const { body } = require("express-validator");
 
 const signUpValidator = [
-	body('email')
+	body("email")
 		.trim()
 		.notEmpty()
-		.withMessage('Email is required')
+		.withMessage("Email is required")
 		.isEmail()
 		.normalizeEmail()
-		.withMessage('Must be a valid email')
-		.isLength({max: 50})
-		.withMessage('Email must be under 50 characters'),
+		.withMessage("Must be a valid email")
+		.isLength({ max: 50 })
+		.withMessage("Email must be under 50 characters"),
 
-	body('username')
+	body("username")
 		.trim()
 		.notEmpty()
-		.withMessage('Username is required')
-		.isLength({min: 3, max: 20})
-		.withMessage('Username must be 3-20 characters')
+		.withMessage("Username is required")
+		.isLength({ min: 3, max: 20 })
+		.withMessage("Username must be 3-20 characters")
 		.matches(/^[a-zA-Z0-9_-]+$/)
 		.withMessage(
-			'Username can only contain letters, numbers, underscore, hyphen',
-			),
+			"Username can only contain letters, numbers, underscore, hyphen",
+		),
 
-	body('password')
+	body("password")
 		.notEmpty()
-		.withMessage('Password is required')
-		.isLength({min: 6, max: 128})
-		.withMessage('Password must be between 6-128 characters'),
+		.withMessage("Password is required")
+		.isLength({ min: 6, max: 128 })
+		.withMessage("Password must be between 6-128 characters"),
 
-	body('confirmPassword')
+	body("confirmPassword")
 		.notEmpty()
-		.withMessage('Please confirm your password')
-		.custom((value, {req}) => {
+		.withMessage("Please confirm your password")
+		.custom((value, { req }) => {
 			if (value !== req.body.password) {
-				throw new Error('Passwords do not match');
+				throw new Error("Passwords do not match");
 			}
 			return true;
 		}),
 ];
 
 const loginValidator = [
-	body('identifier')
+	body("identifier")
 		.trim()
 		.notEmpty()
-		.withMessage('Email or username is required')
-		.isLength({max: 50})
-		.withMessage('Identifier must be under 50 characters')
+		.withMessage("Email or username is required")
+		.isLength({ max: 50 })
+		.withMessage("Identifier must be under 50 characters")
 		.customSanitizer((value) => {
 			// Normalize email to lowercase if it contains @ symbol
-			if (value && value.includes('@')) {
+			if (value && value.includes("@")) {
 				return value.toLowerCase();
 			}
-			return value;  // Keep username as-is
+			return value; // Keep username as-is
 		}),
-	body('password')
+	body("password")
 		.notEmpty()
-		.withMessage('Password is required')
-		.isLength({min: 1, max: 128})
-		.withMessage('Password must be under 128 characters'),
+		.withMessage("Password is required")
+		.isLength({ min: 1, max: 128 })
+		.withMessage("Password must be under 128 characters"),
 ];
 
 module.exports = {
 	signUpValidator,
-	loginValidator
+	loginValidator,
 };

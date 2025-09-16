@@ -98,8 +98,8 @@ describe("POST /auth/signup", () => {
                 password: "Password123",
                 confirmPassword: "Password123",
             })
-            .expect(400); 
+            .expect(400);
 
-        expect(response.body.error).toBe('Validation failed');
+        expect(response.body.error).toBe("Validation failed");
     });
 });

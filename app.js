@@ -1,18 +1,18 @@
 // Load environment variables
-require('dotenv').config();
+require("dotenv").config();
 
 // Core dependencies
-const express = require('express');
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 // Authentication
-const passport = require('./config/passport');
+const passport = require("./config/passport");
 
 // Route imports
-const authRouter = require('./routes/auth');
-const signUpRouter = require('./routes/signUp');
-const sessionsRouter = require('./routes/sessions');
+const authRouter = require("./routes/auth");
+const signUpRouter = require("./routes/signUp");
+const sessionsRouter = require("./routes/sessions");
 
 // App initialization
 const app = express();
@@ -24,74 +24,80 @@ app.use(express.json());
 // CORS configuration
 app.use(
 	cors({
-		origin: function(origin, callback) {
+		origin: function (origin, callback) {
 			// Allow requests with no origin (Postman)
 			if (!origin) return callback(null, true);
 
 			const allowedOrigins = [
-				'http://localhost:3000', 'http://localhost:3001',
-				'http://localhost:5173', 'http://localhost:5174',
+				"http://localhost:3000",
+				"http://localhost:3001",
+				"http://localhost:5173",
+				"http://localhost:5174",
 				// Add your production URLs here
 			];
 
 			if (allowedOrigins.includes(origin)) {
 				callback(null, true);
 			} else {
-				callback(new Error('Not allowed by CORS'));
+				callback(new Error("Not allowed by CORS"));
 			}
 		},
 		credentials: true,
-		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 		allowedHeaders: [
-			'Origin',
-			'X-Requested-With',
-			'Content-Type',
-			'Accept',
-			'Authorization',
+			"Origin",
+			"X-Requested-With",
+			"Content-Type",
+			"Accept",
+			"Authorization",
 		],
 		optionsSuccessStatus: 200,
 	}),
 );
 
 // Route handlers
-app.use('/auth', authRouter);
-app.use('/auth/signup', signUpRouter);
-app.use('/sessions', sessionsRouter);
+app.use("/auth", authRouter);
+app.use("/auth/signup", signUpRouter);
+app.use("/sessions", sessionsRouter);
 
 // 404 handler for undefined routes
-app.use('/{*any}', (req, res) => {
+app.use("/{*any}", (req, res) => {
 	res.status(404).json({
-		error: 'Page not found',
+		error: "Page not found",
 		message: `Cannot ${req.method} ${req.originalUrl}`,
 	});
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
-	console.error('Global error:', err.stack);
+	console.error("Global error:", err.stack);
 
 	// JWT errors
-	if (err.name === 'UnauthorizedError') {
-		return res.status(401).json({error: 'Invalid token'});
+	if (err.name === "UnauthorizedError") {
+		return res.status(401).json({ error: "Invalid token" });
 	}
 
 	// Validation errors
-	if (err.name === 'ValidationError') {
-		return res.status(400).json(
-			{error: 'Validation failed', details: err.message});
+	if (err.name === "ValidationError") {
+		return res
+			.status(400)
+			.json({ error: "Validation failed", details: err.message });
 	}
 
 	// Prisma errors
-	if (err.code && err.code.startsWith('P')) {
-		return res.status(400).json({error: 'Database error', code: err.code});
+	if (err.code && err.code.startsWith("P")) {
+		return res
+			.status(400)
+			.json({ error: "Database error", code: err.code });
 	}
 
 	// Default server error
 	res.status(500).json({
-		error: 'Internal server error',
-		message: process.env.NODE_ENV === 'development' ?
-			err.message :
-			'Something went wrong',
+		error: "Internal server error",
+		message:
+			process.env.NODE_ENV === "development"
+				? err.message
+				: "Something went wrong",
 	});
 });
 

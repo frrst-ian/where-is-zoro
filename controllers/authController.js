@@ -1,35 +1,36 @@
-const passport = require('../config/passport');
-const jwt = require('jsonwebtoken');
-const {validationResult} = require('express-validator');
+const passport = require("../config/passport");
+const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 
 async function postLogin(req, res, next) {
 	try {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({
-				error: 'Validation failed',
+				error: "Validation failed",
 				details: errors.array(),
 			});
 		}
 
 		passport.authenticate(
-			'local',
-			{session: false},
+			"local",
+			{ session: false },
 			(err, user, info) => {
 				if (err) {
-					return res.status(500).json(
-						{error: 'Authentication error'});
+					return res
+						.status(500)
+						.json({ error: "Authentication error" });
 				}
 				if (!user) {
 					return res.status(401).json({
-						error: info?.message || 'Invalid credentials',
+						error: info?.message || "Invalid credentials",
 					});
 				}
 
 				const token = jwt.sign(
-					{userId: user.id, email: user.email},
+					{ userId: user.id, email: user.email },
 					process.env.JWT_SECRET,
-					{expiresIn: '7d'},
+					{ expiresIn: "7d" },
 				);
 
 				res.json({
@@ -41,11 +42,11 @@ async function postLogin(req, res, next) {
 					},
 				});
 			},
-			)(req, res);
+		)(req, res);
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({error: 'Internal Server Error'});
+		res.status(500).json({ error: "Internal Server Error" });
 	}
 }
 
-module.exports = {postLogin};
+module.exports = { postLogin };

@@ -78,8 +78,8 @@ describe("POST /auth/login", () => {
         expect(response.body.details).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({ path: "identifier" }),
-                expect.objectContaining({ path: "password" })
-            ])
+                expect.objectContaining({ path: "password" }),
+            ]),
         );
     });
 
@@ -133,11 +133,11 @@ describe("POST /auth/login", () => {
         expect(response.body.error).toBe("Validation failed");
         expect(response.body.details).toEqual(
             expect.arrayContaining([
-                expect.objectContaining({ 
+                expect.objectContaining({
                     path: "identifier",
-                    msg: expect.stringContaining("required")
-                })
-            ])
+                    msg: expect.stringContaining("required"),
+                }),
+            ]),
         );
     });
 
@@ -153,11 +153,11 @@ describe("POST /auth/login", () => {
         expect(response.body.error).toBe("Validation failed");
         expect(response.body.details).toEqual(
             expect.arrayContaining([
-                expect.objectContaining({ 
+                expect.objectContaining({
                     path: "password",
-                    msg: expect.stringContaining("required")
-                })
-            ])
+                    msg: expect.stringContaining("required"),
+                }),
+            ]),
         );
     });
 
