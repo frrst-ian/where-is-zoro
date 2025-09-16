@@ -41,6 +41,10 @@ async function completeSession(req, res) {
         const { sessionId } = req.params;
         const session = await sessionModel.completeSession(sessionId);
         
+        if (!session) {
+            return res.status(404).json({ error: "Session not found or already completed" });
+        }
+        
         res.json({
             sessionId: session.id,
             totalTime: session.endTime - session.startTime
@@ -49,7 +53,6 @@ async function completeSession(req, res) {
         res.status(500).json({ error: "Failed to complete session" });
     }
 }
-
 module.exports = {
     createSession,
     getSession,

@@ -59,6 +59,7 @@ model GameSession {
   startTime DateTime  @default(now())
   endTime   DateTime?
   completed Boolean   @default(false)
+  expiresAt DateTime  @default(dbgenerated("NOW() + INTERVAL '24 HOURS'"))
   Click     Click[]
 }
 
