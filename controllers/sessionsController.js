@@ -4,8 +4,8 @@ const sessionModel = require("../models/sessionModel");
 async function createSession(req, res, next) {
     try {
         const sessionId = crypto.randomUUID();
-        // Hardcode photoId=1 for now
-        const session = await sessionModel.createSession(sessionId, 1);
+        const userId = req.user?.id || null;
+        const session = await sessionModel.createSession(sessionId, 1, userId);
 
         return res.status(201).json({
             sessionId: session.id,
@@ -21,6 +21,10 @@ async function getSession(req, res) {
     try {
         const { sessionId } = req.params;
         const session = await sessionModel.getSessionById(sessionId);
+
+        if (req.user && session?.userId !== req.user.id) {
+            return res.status(404).json({ error: "Session not found" });
+        }
 
         if (!session) {
             return res.status(404).json({ error: "Session not found" });

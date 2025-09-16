@@ -1,6 +1,6 @@
 const prisma = require("./prisma");
 
-async function createSession(sessionId, photoId) {
+async function createSession(sessionId, photoId ,userId=null) {
     return await prisma.gameSession.create({
         data: {
             id: sessionId,
