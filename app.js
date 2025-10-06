@@ -14,6 +14,7 @@ const authRouter = require("./routes/auth");
 const signUpRouter = require("./routes/signUp");
 const sessionsRouter = require("./routes/sessions");
 const gameRouter = require("./routes/game");
+const leaderboardRouter = require("./routes/leaderboard");
 
 // App initialization
 const app = express();
@@ -61,6 +62,7 @@ app.use("/auth", authRouter);
 app.use("/auth/signup", signUpRouter);
 app.use("/sessions", sessionsRouter);
 app.use("/game", gameRouter);
+app.use("/leaderboard", leaderboardRouter);
 
 // 404 handler for undefined routes
 app.use("/{*any}", (req, res) => {
