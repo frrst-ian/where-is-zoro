@@ -32,7 +32,7 @@ async function main() {
   });
   await prisma.charactersOnPhotos.createMany({
     data: [
-      { photoId: photo2.id, characterId: zoro.id, x: 300, y: 450, radius: 50 },
+      { photoId: photo2.id, characterId: zoro.id, x: 600, y: 400, radius: 50 },
       { photoId: photo2.id, characterId: luffy.id, x: 820, y: 200, radius: 50 },
       { photoId: photo2.id, characterId: sanji.id, x: 970, y: 250, radius: 50 },
       { photoId: photo2.id, characterId: nami.id, x: 900, y: 200, radius: 50 },

@@ -8,7 +8,6 @@ async function createSession(req, res, next) {
         const { photoId } = req.body;
         const session = await sessionModel.createSession(
             sessionId,
-            2,
             photoId || 1,
             userId,
         );
