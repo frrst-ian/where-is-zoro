@@ -9,9 +9,13 @@ async function postSignUp(req, res, next) {
 		const { email, username, password } = req.body;
 
 		if (!errors.isEmpty()) {
+			const validationErrors = errors
+				.array()
+				.map((err) => `${err.path}: ${err.msg}`);
+
 			return res.status(400).json({
 				error: "Validation failed",
-				details: errors.array(),
+				details: validationErrors,
 			});
 		}
 
@@ -33,6 +37,12 @@ async function postSignUp(req, res, next) {
 			user: { id: user.id, email: user.email, username: user.username },
 		});
 	} catch (err) {
+		if (err.code === "P2002") {
+			const field = err.meta.target[0]; // 'email' or 'username'
+			return res.status(409).json({
+				error: `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`,
+			});
+		}
 		console.error(err);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
