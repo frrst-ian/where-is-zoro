@@ -5,7 +5,13 @@ async function createSession(req, res, next) {
     try {
         const sessionId = crypto.randomUUID();
         const userId = req.user?.id || null;
-        const session = await sessionModel.createSession(sessionId, 2, userId);
+        const { photoId } = req.body;
+        const session = await sessionModel.createSession(
+            sessionId,
+            2,
+            photoId || 1,
+            userId,
+        );
 
         return res.status(201).json({
             sessionId: session.id,
