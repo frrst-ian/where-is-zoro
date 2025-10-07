@@ -10,7 +10,6 @@ async function createSession(sessionId, photoId ,userId=null) {
 }
 
 async function getSessionById(sessionId) {
-    // Only return if not expired
     return await prisma.gameSession.findFirst({
         where: {
             id: sessionId,
