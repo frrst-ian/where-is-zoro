@@ -1,33 +1,25 @@
-// Load environment variables
 require("dotenv").config();
 
-// Core dependencies
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
-// Authentication
 const passport = require("./config/passport");
 
-// Route imports
 const authRouter = require("./routes/auth");
 const signUpRouter = require("./routes/signUp");
 const sessionsRouter = require("./routes/sessions");
 const gameRouter = require("./routes/game");
 const leaderboardRouter = require("./routes/leaderboard");
 
-// App initialization
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// JSON parser middleware
 app.use(express.json());
 
-// CORS configuration
 app.use(
 	cors({
 		origin: function (origin, callback) {
-			// Allow requests with no origin (Postman)
 			if (!origin) return callback(null, true);
 
 			const allowedOrigins = [
@@ -35,7 +27,6 @@ app.use(
 				"http://localhost:3001",
 				"http://localhost:5173",
 				"http://localhost:5174",
-				// Add your production URLs here
 			];
 
 			if (allowedOrigins.includes(origin)) {
@@ -57,14 +48,12 @@ app.use(
 	}),
 );
 
-// Route handlers
 app.use("/auth", authRouter);
 app.use("/auth/signup", signUpRouter);
 app.use("/sessions", sessionsRouter);
 app.use("/game", gameRouter);
 app.use("/leaderboard", leaderboardRouter);
 
-// 404 handler for undefined routes
 app.use("/{*any}", (req, res) => {
 	res.status(404).json({
 		error: "Page not found",
@@ -72,7 +61,6 @@ app.use("/{*any}", (req, res) => {
 	});
 });
 
-// Global error handler
 app.use((err, req, res, next) => {
 	console.error("Global error:", err.stack);
 
@@ -105,7 +93,6 @@ app.use((err, req, res, next) => {
 	});
 });
 
-// Start server
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
